@@ -62,7 +62,6 @@ public class UserInfoController extends BaseController {
     @RequestMapping("/get/{id}")
     @ResponseBody
     public Result get(@PathVariable String id) {
-        return new Result().success(userInfoService.get(id)
-        );
+        return new Result().success(userInfoService.get(id));
     }
 }
