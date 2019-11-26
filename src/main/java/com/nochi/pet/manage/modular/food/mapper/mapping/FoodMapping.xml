@@ -12,25 +12,27 @@
         <result column="status" property="status" />
         <result column="praise" property="praise" />
         <result column="create_time" property="createTime" />
-
+        <result column="user_id" property="userId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,title,summary,content,img,status,praise,create_time as createTime
+        id,title,summary,content,img,status,praise,create_time as createTime,user_id as userId
     </sql>
 
     <select id="list" parameterType="String" resultType="map">
         select
-        <include refid="Base_Column_List"/>
-        from tb_food
+        tf.id,tf.title,tf.summary,tf.content,tf.img,tf.status,tf.praise,tf.create_time as createTime,user_id as userId,
+        tu.nickname as nickName
+        from tb_food tf
+        left join tb_user tu on tu.id = tf.user_id
         <where>
             1=1
             <if test="title!=null and title!=''">
-                title like '%${title}%'
+                tf.title like '%${title}%'
             </if>
         </where>
-        order by create_time desc
+        order by tf.create_time desc
     </select>
 
     <select id="topTen" resultMap="BaseResultMap">

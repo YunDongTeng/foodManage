@@ -38,11 +38,19 @@ public class LayuiPageFactory {
     public static Page defaultPage() {
         HttpServletRequest request = HttpContext.getRequest();
 
+        int limit = 10;
         //每页多少条数据
-        int limit = Integer.valueOf(request.getParameter("limit"));
+        if (request.getParameter("limit") != null) {
+            limit = Integer.valueOf(request.getParameter("limit"));
+        }
 
         //第几页
-        int page = Integer.valueOf(request.getParameter("page"));
+        int page = 1;
+        if(request.getParameter("page")!=null){
+            page = Integer.valueOf(request.getParameter("page"));
+        }
+
+
 
         return new Page(page, limit);
     }

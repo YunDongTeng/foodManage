@@ -7,6 +7,7 @@ import com.nochi.pet.manage.modular.food.service.FoodService;
 import com.nochi.pet.manage.modular.system.warpper.DeptWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +35,11 @@ public class FoodController {
         return new Result().success(wrap);
     }
 
+    @RequestMapping("/detail/{id}")
+    @ResponseBody
+    public Result detail(@PathVariable("id")String id){
+        return new Result().success(foodService.detail(id));
+    }
     /**
      * 点赞
      * @param id

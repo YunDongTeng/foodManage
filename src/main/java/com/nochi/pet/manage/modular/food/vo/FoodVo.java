@@ -14,6 +14,24 @@ public class FoodVo {
     private Integer status;
     private Integer praise;
     private Date createTime;
+    private String nickName;
+    private Integer commentNum;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
+    }
 
     public String getId() {
         return id;

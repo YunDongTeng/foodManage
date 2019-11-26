@@ -1,11 +1,13 @@
-package com.nochi.pet.manage.modular.food.entity;
+package com.nochi.pet.manage.modular.food.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.nochi.pet.manage.modular.food.entity.Food;
+import com.nochi.pet.manage.modular.user.entity.UserInfo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-@TableName("tb_food")
-public class Food {
+public class FoodDetailVo {
 
     private String id;
     private String title;
@@ -15,14 +17,20 @@ public class Food {
     private Integer status=1;
     private Integer praise=0;
     private Date createTime;
-    private String userId;
+    private String nickName;
 
-    public String getUserId() {
-        return userId;
+    private List<String> imageArray = new ArrayList<>();
+
+
+    private List<CommentVo> commentVoList = new ArrayList<>();
+
+
+    public List<String> getImageArray() {
+        return imageArray;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setImageArray(List<String> imageArray) {
+        this.imageArray = imageArray;
     }
 
     public String getId() {
@@ -87,5 +95,21 @@ public class Food {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public List<CommentVo> getCommentVoList() {
+        return commentVoList;
+    }
+
+    public void setCommentVoList(List<CommentVo> commentVoList) {
+        this.commentVoList = commentVoList;
     }
 }
