@@ -20,7 +20,7 @@
         id,title,summary,content,img,status,praise,create_time as createTime
     </sql>
 
-    <select id="list" parameterType="String" resultMap="BaseResultMap">
+    <select id="list" parameterType="String" resultType="map">
         select
         <include refid="Base_Column_List"/>
         from tb_food
@@ -36,8 +36,9 @@
     <select id="topTen" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from tb_food limit 10
+        from tb_food
         order by praise desc
+        limit 10
     </select>
 
     <update id="updatePwd" parameterType="String">
