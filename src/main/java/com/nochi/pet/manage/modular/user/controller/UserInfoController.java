@@ -6,10 +6,7 @@ import com.nochi.pet.manage.modular.user.entity.UserInfo;
 import com.nochi.pet.manage.modular.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/userInfo")
 @Controller
@@ -28,7 +25,7 @@ public class UserInfoController extends BaseController {
      */
     @RequestMapping("/login")
     @ResponseBody
-    public Result login(@RequestParam String username, String password) {
+    public Result login(String username, String password) {
         return new Result().success(userInfoService.login(username, password));
     }
 
@@ -59,13 +56,13 @@ public class UserInfoController extends BaseController {
     /**
      * 获取用户详情
      *
-     * @param userId
+     * @param id
      * @return
      */
-    @RequestMapping("/get")
+    @RequestMapping("/get/{id}")
     @ResponseBody
-    public Result get(String userId) {
-        return new Result().success(userInfoService.get(userId)
+    public Result get(@PathVariable String id) {
+        return new Result().success(userInfoService.get(id)
         );
     }
 }
