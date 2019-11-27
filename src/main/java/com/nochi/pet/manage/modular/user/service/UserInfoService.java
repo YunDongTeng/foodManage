@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nochi.pet.manage.core.common.exception.BizExceptionEnum;
 import com.nochi.pet.manage.core.util.IDUtil;
 import com.nochi.pet.manage.core.util.MD5Util;
+import com.nochi.pet.manage.modular.base.entity.Result;
 import com.nochi.pet.manage.modular.user.entity.UserInfo;
 import com.nochi.pet.manage.modular.user.mapper.UserInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +37,17 @@ public class UserInfoService extends ServiceImpl<UserInfoMapper, UserInfo> {
      * @param password
      * @return
      */
-    public UserInfo login(String username, String password) {
+    public Result login(String username, String password) {
         UserInfo userInfo = userInfoMapper.queryByUsername(username);
         if (userInfo == null) {
-            throw new ServiceException(BizExceptionEnum.NO_THIS_USER);
+            return new Result().fail("不存在该用户");
         }
 
         if (!userInfo.getPassword().equals(MD5Util.getMD5String(password))) {
-            throw new ServiceException(BizExceptionEnum.OLD_PWD_NOT_RIGHT);
+            return new Result().fail("密码错误");
         }
 
-        return userInfo;
+        return new Result().success(userInfo);
     }
 
     /**

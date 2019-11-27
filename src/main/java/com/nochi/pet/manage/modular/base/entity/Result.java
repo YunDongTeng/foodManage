@@ -9,6 +9,10 @@ public class Result<T>{
     public Result success(T data){
         return new Result(200,"success",data);
     }
+
+    public Result fail(String message){
+        return new Result(500,message,null);
+    }
     public Result(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;

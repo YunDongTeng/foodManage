@@ -26,7 +26,7 @@ public class UserInfoController extends BaseController {
     @RequestMapping("/login")
     @ResponseBody
     public Result login(String username, String password) {
-        return new Result().success(userInfoService.login(username, password));
+        return userInfoService.login(username, password);
     }
 
     /**
