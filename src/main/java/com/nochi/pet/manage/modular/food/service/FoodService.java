@@ -75,6 +75,7 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
                 for (Comment reply : replyList) {
                     CommentVo replyVo = new CommentVo(reply.getId(), reply.getContent(), reply.getCreateTime());
                     replyVo.setNickName(getNickName(reply.getFromUser()));
+                    replyVo.setReplyFlag(true);
                     replies.add(replyVo);
                 }
                 commentVo.setReplyArray(replies);

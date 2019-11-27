@@ -11,6 +11,8 @@ public class CommentVo {
     private String nickName;
     private Date createTime;
 
+    private Boolean replyFlag;
+    private List<CommentVo> replyArray = new ArrayList<>();
     public CommentVo(String id, String content, Date createTime) {
         this.id = id;
         this.content = content;
@@ -27,7 +29,15 @@ public class CommentVo {
     public CommentVo() {
     }
 
-    private List<CommentVo> replyArray = new ArrayList<>();
+
+    public Boolean getReplyFlag() {
+        return replyFlag;
+    }
+
+    public void setReplyFlag(Boolean replyFlag) {
+        this.replyFlag = replyFlag;
+    }
+
     public String getId() {
         return id;
     }

@@ -14,6 +14,7 @@ public class Comment {
     private String toUser;
     private String cId;
     private Date createTime;
+    private Boolean isReply;
 
     public String getId() {
         return id;
@@ -25,6 +26,14 @@ public class Comment {
 
     public String getFoodId() {
         return foodId;
+    }
+
+    public Boolean getReply() {
+        return isReply;
+    }
+
+    public void setReply(Boolean reply) {
+        isReply = reply;
     }
 
     public void setFoodId(String foodId) {
