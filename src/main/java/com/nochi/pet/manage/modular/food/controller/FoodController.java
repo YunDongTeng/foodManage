@@ -7,11 +7,10 @@ import com.nochi.pet.manage.modular.food.service.FoodService;
 import com.nochi.pet.manage.modular.system.warpper.DeptWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
@@ -24,6 +23,7 @@ public class FoodController {
 
     /**
      * 获取美食信息
+     *
      * @param title
      * @return
      */
@@ -37,11 +37,26 @@ public class FoodController {
 
     @RequestMapping("/detail/{id}")
     @ResponseBody
-    public Result detail(@PathVariable("id")String id){
+    public Result detail(@PathVariable("id") String id) {
         return new Result().success(foodService.detail(id));
     }
+
+    /**
+     * 删除
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping("/delete/{id}")
+    @ResponseBody
+    public Result detete(@PathVariable("id") String id) {
+        foodService.deleteFood(id);
+        return new Result().success(true);
+    }
+
     /**
      * 点赞
+     *
      * @param id
      * @return
      */
@@ -53,6 +68,7 @@ public class FoodController {
 
     /**
      * 获取到前10条美食信息(点赞排行)
+     *
      * @return
      */
     @RequestMapping("/topTen")
@@ -64,7 +80,28 @@ public class FoodController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Result save(Food food){
+    public Result save(HttpServletRequest request) {
+
+        Map<String, String[]> parameterMap = request.getParameterMap();
+
+        Food food = new Food();
+        for (Map.Entry entry : parameterMap.entrySet()) {
+            if (entry.getKey().equals("title")) {
+                String[] titleArray = (String[]) entry.getValue();
+                food.setTitle(titleArray[0]);
+                continue;
+            }
+            if (entry.getKey().equals("content")) {
+                String[] contentArray = (String[]) entry.getValue();
+                food.setContent(contentArray[0]);
+                continue;
+            }
+            if (entry.getKey().equals("userId")) {
+                String[] userArray = (String[]) entry.getValue();
+                food.setUserId(userArray[0]);
+                continue;
+            }
+        }
         return new Result().success(foodService.saveFood(food));
     }
 

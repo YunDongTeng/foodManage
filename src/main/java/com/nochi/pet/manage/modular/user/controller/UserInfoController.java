@@ -38,7 +38,7 @@ public class UserInfoController extends BaseController {
     @PostMapping("/register")
     @ResponseBody
     public Result register(UserInfo userInfo) {
-        return new Result().success(userInfoService.register(userInfo));
+        return userInfoService.register(userInfo);
     }
 
     /**
@@ -49,8 +49,8 @@ public class UserInfoController extends BaseController {
      */
     @PostMapping("/updatePwd")
     @ResponseBody
-    public Result updatePwd(UserInfo userInfo) {
-        return new Result().success(userInfoService.updatePwd(userInfo));
+    public Result updatePwd(UserInfo userInfo) throws Exception {
+        return userInfoService.updatePwd(userInfo);
     }
 
     /**

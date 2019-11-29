@@ -2,6 +2,7 @@ package com.nochi.pet.manage.modular.food.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.beans.Transient;
 import java.util.Date;
 
 @TableName("tb_food")
@@ -9,7 +10,6 @@ public class Food {
 
     private String id;
     private String title;
-    private String summary;
     private String content;
     private String img;
     private Integer status=1;
@@ -17,9 +17,19 @@ public class Food {
     private Date createTime;
     private String userId;
 
+    public Food() {
+    }
+
+    public Food(String title, String content, String userId) {
+        this.title = title;
+        this.content = content;
+        this.userId = userId;
+    }
+
     public String getUserId() {
         return userId;
     }
+
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -39,14 +49,6 @@ public class Food {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public String getContent() {

@@ -10,6 +10,7 @@ public class CommentVo {
     private String content;
     private String nickName;
     private Date createTime;
+    private String userId;
 
     private Boolean replyFlag;
     private List<CommentVo> replyArray = new ArrayList<>();
@@ -24,6 +25,14 @@ public class CommentVo {
         this.content = content;
         this.nickName = nickName;
         this.createTime = createTime;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public CommentVo() {

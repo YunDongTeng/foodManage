@@ -10,5 +10,5 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
     UserInfo queryByUsername(String username);
 
-    void updatePwd(@Param("password")String password,@Param("id")String id);
+    void updatePwd(@Param("password")String password,@Param("username")String username);
 }

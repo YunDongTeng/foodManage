@@ -18,6 +18,7 @@ public class FoodDetailVo {
     private Integer praise=0;
     private Date createTime;
     private String nickName;
+    private String userId;
 
     private List<String> imageArray = new ArrayList<>();
 
@@ -31,6 +32,14 @@ public class FoodDetailVo {
 
     public void setImageArray(List<String> imageArray) {
         this.imageArray = imageArray;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getId() {

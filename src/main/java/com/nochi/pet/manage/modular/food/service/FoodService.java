@@ -12,6 +12,7 @@ import com.nochi.pet.manage.modular.food.entity.Food;
 import com.nochi.pet.manage.modular.food.mapper.FoodMapper;
 import com.nochi.pet.manage.modular.food.vo.CommentVo;
 import com.nochi.pet.manage.modular.food.vo.FoodDetailVo;
+import com.nochi.pet.manage.modular.system.entity.User;
 import com.nochi.pet.manage.modular.user.entity.UserInfo;
 import com.nochi.pet.manage.modular.user.mapper.UserInfoMapper;
 import io.jsonwebtoken.lang.Collections;
@@ -19,11 +20,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class FoodService extends ServiceImpl<FoodMapper, Food> {
@@ -38,8 +42,13 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
     private CommentMapper commentMapper;
 
 
+    public void deleteFood(String id) {
+        this.removeById(id);
+    }
+
     /**
      * 获取美食详情，包括评论和回复信息
+     *
      * @param foodId
      * @return
      */
@@ -50,8 +59,10 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
         }
         FoodDetailVo foodDetailVo = new FoodDetailVo();
 
-        BeanUtils.copyProperties(food,foodDetailVo);
-        foodDetailVo.setNickName(getNickName(food.getUserId()));
+        BeanUtils.copyProperties(food, foodDetailVo);
+        UserInfo userInfo = getUser(food.getUserId());
+        foodDetailVo.setNickName(userInfo.getNickname());
+        foodDetailVo.setUserId(userInfo.getId());
 
         if (!StringUtils.isEmpty(food.getImg())) {
             String[] imageArray = food.getImg().split(";");
@@ -66,15 +77,18 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
         if (comments != null) {
             for (Comment comment : comments) {
                 CommentVo commentVo = new CommentVo(comment.getId(), comment.getContent(), comment.getCreateTime());
-                commentVo.setNickName(getNickName(comment.getFromUser()));
-
+                UserInfo commentUser = getUser(comment.getFromUser());
+                commentVo.setNickName(commentUser == null ? "匿名用户" : commentUser.getNickname());
+                commentVo.setUserId(commentUser.getId());
                 //查询该评论下的回复内容
                 List<CommentVo> replies = new ArrayList<>();
 
                 List<Comment> replyList = commentMapper.getReplyByCid(comment.getId());
                 for (Comment reply : replyList) {
                     CommentVo replyVo = new CommentVo(reply.getId(), reply.getContent(), reply.getCreateTime());
-                    replyVo.setNickName(getNickName(reply.getFromUser()));
+                    UserInfo replyUser = getUser(reply.getFromUser());
+                    replyVo.setNickName(replyUser == null ? "匿名用户" : replyUser.getNickname());
+                    replyVo.setUserId(replyUser.getId());
                     replyVo.setReplyFlag(true);
                     replies.add(replyVo);
                 }
@@ -87,9 +101,9 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
         return foodDetailVo;
     }
 
-    public String getNickName(String userId) {
+    public UserInfo getUser(String userId) {
         UserInfo userInfo = userInfoMapper.selectById(userId);
-        return userInfo == null ? "匿名用户" : userInfo.getNickname();
+        return userInfo;
     }
 
     /**
@@ -99,14 +113,17 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
      * @return
      */
     public Food saveFood(Food food) {
-        if (ToolUtil.isOneEmpty(food, food.getTitle(), food.getSummary())) {
+        if (ToolUtil.isOneEmpty(food, food.getTitle())) {
             throw new RequestEmptyException();
         }
 
-        food.setId(IDUtil.getId() + "");
-        food.setCreateTime(new Date());
-
-        this.save(food);
+        if (food.getId() == null) {
+            food.setId(IDUtil.getId() + "");
+            food.setCreateTime(new Date());
+            this.save(food);
+        } else {
+            this.saveOrUpdate(food);
+        }
 
         return food;
     }
@@ -128,10 +145,18 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
             }
 
             //图片
-            String img = (String) dataMap.get("img");
+         /*   String img = (String) dataMap.get("img");
             if (!StringUtils.isEmpty(img)) {
                 String[] imageArray = img.split(";");
                 dataMap.put("imageArray", imageArray);
+
+
+            }
+*/
+            String content = (String) dataMap.get("content");
+            if (!StringUtils.isEmpty(content)) {
+                List<String> images = getImgStr(content);
+                dataMap.put("imageArray", images);
             }
 
 
@@ -169,5 +194,44 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
         return this.getById(foodId);
     }
 
+    public static List<String> getImgStr(String htmlStr) {
+        List<String> list = new ArrayList<>();
+        String img = "";
+        Pattern p_image;
+        Matcher m_image;
+        // String regEx_img = "<img.*src=(.*?)[^>]*?>"; //图片链接地址
+        String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+        p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(htmlStr);
+        while (m_image.find()) {
+            // 得到<img />数据
+            img = m_image.group();
+            // 匹配<img>中的src数据
+            Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+            while (m.find()) {
+                list.add(m.group(1));
+            }
+        }
+        return list;
+    }
 
+    public static String removeImg(String htmlStr) {
+        String img = "";
+        Pattern p_image;
+        Matcher m_image;
+        // String regEx_img = "<img.*src=(.*?)[^>]*?>"; //图片链接地址
+        String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+        p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(htmlStr);
+        while (m_image.find()) {
+            // 得到<img />数据
+            img = m_image.group();
+            // 匹配<img>中的src数据
+            Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+            while (m.find()) {
+                htmlStr.replace(img, "");
+            }
+        }
+        return null;
+    }
 }

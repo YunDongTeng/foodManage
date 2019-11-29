@@ -6,7 +6,6 @@
     <resultMap id="BaseResultMap" type="com.nochi.pet.manage.modular.food.entity.Food">
         <id column="id" property="id" />
         <result column="title" property="title" />
-        <result column="summary" property="summary" />
         <result column="content" property="content" />
         <result column="img" property="img" />
         <result column="status" property="status" />
@@ -17,19 +16,19 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,title,summary,content,img,status,praise,create_time as createTime,user_id as userId
+        id,title,content,img,status,praise,create_time as createTime,user_id as userId
     </sql>
 
     <select id="list" parameterType="String" resultType="map">
         select
-        tf.id,tf.title,tf.summary,tf.content,tf.img,tf.status,tf.praise,tf.create_time as createTime,user_id as userId,
+        tf.id,tf.title,tf.content,tf.img,tf.status,tf.praise,tf.create_time as createTime,user_id as userId,
         tu.nickname as nickName
         from tb_food tf
         left join tb_user tu on tu.id = tf.user_id
         <where>
             1=1
             <if test="title!=null and title!=''">
-                tf.title like '%${title}%'
+              and  tf.title like '%${title}%'
             </if>
         </where>
         order by tf.create_time desc

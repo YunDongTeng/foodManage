@@ -59,6 +59,10 @@ public class WebConfig implements WebMvcConfigurer {
     private GunsProperties gunsProperties;
 
 
+    /**
+     * 处理跨域请求
+     * @param registry
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

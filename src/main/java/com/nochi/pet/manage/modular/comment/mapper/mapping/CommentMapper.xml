@@ -23,6 +23,7 @@
         <include refid="Base_Column_List"/>
         from tb_comment
         where c_id = #{cId}
+        order by create_time asc
     </select>
 
     <select id="getCommentByFoodId" parameterType="String" resultType="com.nochi.pet.manage.modular.comment.entity.Comment">
@@ -30,6 +31,7 @@
         <include refid="Base_Column_List"/>
         from tb_comment
         where food_id = #{foodId} and (c_id is null or c_id ='')
+        order by create_time asc
     </select>
 
 

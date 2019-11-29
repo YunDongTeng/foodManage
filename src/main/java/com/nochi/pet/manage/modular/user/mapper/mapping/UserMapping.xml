@@ -26,7 +26,7 @@
     </select>
 
     <update id="updatePwd" parameterType="String">
-        update tb_user set password=#{password} where id = #{id}
+        update tb_user set password=#{password} where username = #{username}
     </update>
 
 </mapper>

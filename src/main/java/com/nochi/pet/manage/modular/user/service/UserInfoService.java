@@ -56,7 +56,7 @@ public class UserInfoService extends ServiceImpl<UserInfoMapper, UserInfo> {
      * @param userInfo
      * @return
      */
-    public UserInfo register(UserInfo userInfo) {
+    public Result register(UserInfo userInfo) {
         if (ToolUtil.isOneEmpty(userInfo, userInfo.getUsername(), userInfo.getNickname(), userInfo.getPassword())) {
             throw new RequestEmptyException();
         }
@@ -69,7 +69,7 @@ public class UserInfoService extends ServiceImpl<UserInfoMapper, UserInfo> {
         userInfo.setCreateTime(new Date());
         this.save(userInfo);
 
-        return userInfo;
+        return new Result().success(userInfo);
     }
 
     /**
@@ -78,14 +78,18 @@ public class UserInfoService extends ServiceImpl<UserInfoMapper, UserInfo> {
      * @param userInfo
      * @return
      */
-    public UserInfo updatePwd(UserInfo userInfo) {
-        if (ToolUtil.isOneEmpty(userInfo.getId(), userInfo.getPassword())) {
+    public Result updatePwd(UserInfo userInfo) throws Exception{
+        if (ToolUtil.isOneEmpty(userInfo.getUsername(), userInfo.getPassword())) {
             throw new RequestEmptyException();
         }
-        userInfo.setPassword(MD5Util.getMD5String(userInfo.getPassword()));
-        userInfoMapper.updatePwd(userInfo.getPassword(),userInfo.getId());
+        UserInfo userInfo1 = this.userInfoMapper.queryByUsername(userInfo.getUsername());
+        if(userInfo1==null){
+           return new Result().fail("用户名不存在");
+        }
+        userInfo1.setPassword(MD5Util.getMD5String(userInfo.getPassword()));
+        userInfoMapper.updatePwd(userInfo1.getPassword(),userInfo1.getUsername());
 
-        return userInfo;
+        return new Result().success(userInfo1);
     }
 
     /**
