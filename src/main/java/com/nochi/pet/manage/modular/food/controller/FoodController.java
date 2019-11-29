@@ -101,6 +101,11 @@ public class FoodController {
                 food.setUserId(userArray[0]);
                 continue;
             }
+            if (entry.getKey().equals("id")) {
+                String[] userArray = (String[]) entry.getValue();
+                food.setId(userArray[0]);
+                continue;
+            }
         }
         return new Result().success(foodService.saveFood(food));
     }

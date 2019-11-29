@@ -122,7 +122,7 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
             food.setCreateTime(new Date());
             this.save(food);
         } else {
-            this.saveOrUpdate(food);
+            this.updateById(food);
         }
 
         return food;
