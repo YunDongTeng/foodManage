@@ -4,21 +4,40 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.nochi.pet.manage.modular.user.entity.UserInfo">
-        <id column="id" property="id" />
-        <result column="username" property="username" />
-        <result column="password" property="password" />
-        <result column="nickname" property="nickname" />
-        <result column="email" property="email" />
-        <result column="phone" property="phone" />
-        <result column="create_time" property="createTime" />
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="create_time" property="createTime"/>
 
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,username,password,nickname,email,phone,create_time as createTime
+        id
+        ,
+        username,
+        password,
+        nickname,
+        email,
+        phone,
+        create_time
+        as
+        createTime
     </sql>
 
+    <select id="list" parameterType="String" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where 1=1
+        <if test="userName!=null and userName!=''">
+            and username =#{userName}
+        </if>
+        order by create_time desc
+    </select>
     <select id="queryByUsername" parameterType="String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -26,7 +45,9 @@
     </select>
 
     <update id="updatePwd" parameterType="String">
-        update tb_user set password=#{password} where username = #{username}
+        update tb_user
+        set password=#{password}
+        where username = #{username}
     </update>
 
 </mapper>

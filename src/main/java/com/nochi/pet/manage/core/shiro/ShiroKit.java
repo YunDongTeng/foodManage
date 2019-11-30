@@ -22,6 +22,7 @@ import com.nochi.pet.manage.modular.system.entity.User;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
@@ -100,7 +101,7 @@ public class ShiroKit {
      */
     public static ShiroUser getUserNotNull() {
         if (isGuest()) {
-            throw new ServiceException(BizExceptionEnum.NOT_LOGIN);
+            throw new AuthenticationException("用户未登录");
         } else {
             return (ShiroUser) getSubject().getPrincipals().getPrimaryPrincipal();
         }
