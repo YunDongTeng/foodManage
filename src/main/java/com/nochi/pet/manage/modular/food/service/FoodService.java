@@ -117,7 +117,7 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
             throw new RequestEmptyException();
         }
 
-        if (food.getId() == null) {
+        if (StringUtils.isEmpty(food.getId())) {
             food.setId(IDUtil.getId() + "");
             food.setCreateTime(new Date());
             this.save(food);

@@ -18,6 +18,12 @@
         id, food_id as foodId,content,from_user as fromUser,to_user as toUser,c_id as cId,create_time as createTime
     </sql>
 
+    <select id="list" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_comment
+        order by create_time desc
+    </select>
     <select id="getReplyByCid" parameterType="String" resultType="com.nochi.pet.manage.modular.comment.entity.Comment">
         select
         <include refid="Base_Column_List"/>

@@ -7,23 +7,22 @@ layui.use(['table', 'admin', 'ax'], function () {
     /**
      * 系统管理--部门管理
      */
-    var User = {
-        tableId: "userTable",
+    var Food = {
+        tableId: "foodTable",
         condition: {
-            userName:''
+            title:''
         }
     };
 
     /**
      * 初始化表格的列
      */
-    User.initColumn = function () {
+    Food.initColumn = function () {
         return [[
             {type: 'checkbox'},
             {field: 'id', hide: true, sort: true, title: 'id'},
-            {field: 'username', sort: true, title: '用户名'},
-            {field: 'nickname', sort: true, title: '昵称'},
-            {field: 'email', sort: true, title: '邮箱'},
+            {field: 'title', sort: true, title: '标题'},
+            {field: 'content', sort: true, title: '内容'},
             {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
         ]];
     };
@@ -31,26 +30,27 @@ layui.use(['table', 'admin', 'ax'], function () {
     /**
      * 点击查询按钮
      */
-    User.search = function () {
+    Food.search = function () {
         var queryData = {};
-        queryData['userName'] = $("#searchUserName").val();
-        table.reload(User.tableId, {where: queryData});
+        queryData['title'] = $("#searchTitle").val();
+        table.reload(Food.tableId, {where: queryData});
     };
 
     /**
      * 弹出添加
      */
-    User.openAddUser = function () {
-        admin.putTempData('formOk', false);
+    Food.openAddUser = function () {
+       /* admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
             area:['760px','460px'],
-            title: '添加会员',
-            content: Feng.ctxPath + '/userInfo/to/add',
+            title: '添加美食',
+            content: Feng.ctxPath + '/food/to/add',
             end: function () {
-                admin.getTempData('formOk') && table.reload(User.tableId);
+                admin.getTempData('formOk') && table.reload(Food.tableId);
             }
-        });
+        });*/
+        window.location.href=Feng.ctxPath + '/food/to/add?'
     };
 
 
@@ -58,18 +58,21 @@ layui.use(['table', 'admin', 'ax'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    User.onEditUser = function (data) {
 
-        admin.putTempData('formOk', false);
+
+    Food.onEditUser = function (data) {
+
+      /*  admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
             title: '修改用户',
-            area:['760px','460px'],
-            content: Feng.ctxPath + '/userInfo/to/update?id=' + data.id,
+            area:['760px','660px'],
+            content: Feng.ctxPath + '/food/to/update?id=' + data.id,
             end: function () {
-                admin.getTempData('formOk') && table.reload(User.tableId);
+                admin.getTempData('formOk') && table.reload(Food.tableId);
             }
-        });
+        });*/
+        window.location.href=Feng.ctxPath + '/food/to/update?id=' + data.id
     };
 
     /**
@@ -77,52 +80,52 @@ layui.use(['table', 'admin', 'ax'], function () {
      *
      * @param data 点击按钮时候的行数据
      */
-    User.onDeleteUser = function (data) {
+    Food.onDeleteUser = function (data) {
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/userInfo/delete", function () {
+            var ajax = new $ax(Feng.ctxPath + "/food/delete/"+data.id, function () {
                 Feng.success("删除成功!");
-                table.reload(User.tableId);
+                table.reload(Food.tableId);
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
             ajax.set("id", data.id);
             ajax.start();
         };
-        Feng.confirm("是否删除 " + data.title + "?", operation);
+        Feng.confirm("是否删除标题 " + data.title + "?", operation);
     };
 
     // 渲染表格
     var tableResult = table.render({
-        elem: '#' + User.tableId,
-        url: Feng.ctxPath + '/userInfo/list',
+        elem: '#' + Food.tableId,
+        url: Feng.ctxPath + '/food/list2',
         page: true,
         height: "full-98",
         cellMinWidth: 100,
-        cols: User.initColumn()
+        cols: Food.initColumn()
     });
 
 
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
-        User.search();
+        Food.search();
     });
 
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
-        User.openAddUser();
+        Food.openAddUser();
     });
 
 
     // 工具条点击事件
-    table.on('tool(' + User.tableId + ')', function (obj) {
+    table.on('tool(' + Food.tableId + ')', function (obj) {
         var data = obj.data;
         var layEvent = obj.event;
 
         if (layEvent === 'edit') {
-            User.onEditUser(data);
+            Food.onEditUser(data);
         } else if (layEvent === 'delete') {
-            User.onDeleteUser(data);
+            Food.onDeleteUser(data);
         }
     });
 });

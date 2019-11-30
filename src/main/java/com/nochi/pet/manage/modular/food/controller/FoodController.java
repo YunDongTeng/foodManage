@@ -1,13 +1,19 @@
 package com.nochi.pet.manage.modular.food.controller;
 
+import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.nochi.pet.manage.core.common.page.LayuiPageFactory;
+import com.nochi.pet.manage.core.log.LogObjectHolder;
 import com.nochi.pet.manage.modular.base.entity.Result;
 import com.nochi.pet.manage.modular.food.entity.Food;
 import com.nochi.pet.manage.modular.food.service.FoodService;
 import com.nochi.pet.manage.modular.system.warpper.DeptWrapper;
+import com.nochi.pet.manage.modular.user.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +23,45 @@ import java.util.Map;
 @RequestMapping("/food")
 public class FoodController {
 
-
+    private String PREFIX = "/modular/food/";
     @Autowired
     private FoodService foodService;
+
+    @RequestMapping("/toList")
+    public String toList(){
+        return PREFIX+"food.html";
+    }
+
+    @RequestMapping("/upload")
+    @ResponseBody
+    public String upload(MultipartFile file){
+        return "";
+    }
+    /**
+     * 添加页面
+     *
+     * @return
+     */
+    @GetMapping("/to/add")
+    public String toAdd() {
+        return PREFIX + "food_add.html";
+    }
+
+    /**
+     * 修改页面
+     *
+     * @return
+     */
+    @GetMapping("/to/update")
+    public String toEdit(@RequestParam("id") String id) {
+        if (ToolUtil.isEmpty(id)) {
+            throw new RequestEmptyException();
+        }
+        Food food = foodService.getOne(id);
+
+        LogObjectHolder.me().set(food);
+        return PREFIX + "food_edit.html";
+    }
 
     /**
      * 获取美食信息
@@ -34,11 +76,24 @@ public class FoodController {
         Page<Map<String, Object>> wrap = new DeptWrapper(list).wrap();
         return new Result().success(wrap);
     }
+    @RequestMapping("/list2")
+    @ResponseBody
+    public Object list2(@RequestParam(value = "title", required = false) String title) {
+        Page<Map<String, Object>> list = foodService.list(title);
+
+        Page<Map<String, Object>> wrap = new DeptWrapper(list).wrap();
+        return LayuiPageFactory.createPageInfo(wrap);
+    }
 
     @RequestMapping("/detail/{id}")
     @ResponseBody
     public Result detail(@PathVariable("id") String id) {
         return new Result().success(foodService.detail(id));
+    }
+    @RequestMapping("/get/{id}")
+    @ResponseBody
+    public Result get(@PathVariable("id") String id) {
+        return new Result().success(foodService.getOne(id));
     }
 
     /**
