@@ -61,8 +61,8 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
 
         BeanUtils.copyProperties(food, foodDetailVo);
         UserInfo userInfo = getUser(food.getUserId());
-        foodDetailVo.setNickName(userInfo.getNickname());
-        foodDetailVo.setUserId(userInfo.getId());
+        foodDetailVo.setNickName(userInfo!=null?userInfo.getNickname():"匿名用户");
+        foodDetailVo.setUserId(userInfo!=null?userInfo.getId():"");
 
         if (!StringUtils.isEmpty(food.getImg())) {
             String[] imageArray = food.getImg().split(";");
