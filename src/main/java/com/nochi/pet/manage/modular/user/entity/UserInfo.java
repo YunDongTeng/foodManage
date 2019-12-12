@@ -14,6 +14,7 @@ public class UserInfo {
     private String email;
     private String phone;
     private Date createTime;
+    private String url;
 
     public String getId() {
         return id;
@@ -65,6 +66,14 @@ public class UserInfo {
 
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public void setCreateTime(Date createTime) {

@@ -14,6 +14,7 @@ import com.nochi.pet.manage.modular.user.entity.UserInfo;
 import com.nochi.pet.manage.modular.user.mapper.UserInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
@@ -40,7 +41,11 @@ public class UserInfoService extends ServiceImpl<UserInfoMapper, UserInfo> {
      * @return
      */
     public UserInfo get(String userId) {
-        return getById(userId);
+        UserInfo userInfo = getById(userId);
+        if(userInfo!=null && (userInfo.getUrl()==null || userInfo.getUrl().equalsIgnoreCase(""))){
+            userInfo.setUrl("http://www.iplaystone.com/static/common/images/loginPic.png");
+        }
+        return userInfo;
     }
 
     /**
@@ -76,6 +81,9 @@ public class UserInfoService extends ServiceImpl<UserInfoMapper, UserInfo> {
         UserInfo existUser = userInfoMapper.queryByUsername(userInfo.getUsername());
         if (existUser != null) {
             throw new ServiceException(BizExceptionEnum.USER_ALREADY_REG);
+        }
+        if(StringUtils.isEmpty(userInfo.getUrl())){
+            userInfo.setUrl("http://www.iplaystone.com/static/common/images/loginPic.png");
         }
         userInfo.setId(String.valueOf(IDUtil.getId()));
         userInfo.setPassword(MD5Util.getMD5String(userInfo.getPassword()));

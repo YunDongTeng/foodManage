@@ -62,6 +62,13 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
         BeanUtils.copyProperties(food, foodDetailVo);
         UserInfo userInfo = getUser(food.getUserId());
         foodDetailVo.setNickName(userInfo!=null?userInfo.getNickname():"匿名用户");
+        if(userInfo!=null && (userInfo.getUrl()==null || userInfo.getUrl().equalsIgnoreCase(""))){
+            foodDetailVo.setUrl("http://www.iplaystone.com/static/common/images/loginPic.png");
+        }else{
+            foodDetailVo.setUrl(userInfo.getUrl());
+        }
+        foodDetailVo.setUrl(userInfo.getUrl());
+
         foodDetailVo.setUserId(userInfo!=null?userInfo.getId():"");
 
         if (!StringUtils.isEmpty(food.getImg())) {
@@ -79,6 +86,11 @@ public class FoodService extends ServiceImpl<FoodMapper, Food> {
                 CommentVo commentVo = new CommentVo(comment.getId(), comment.getContent(), comment.getCreateTime());
                 UserInfo commentUser = getUser(comment.getFromUser());
                 commentVo.setNickName(commentUser == null ? "匿名用户" : commentUser.getNickname());
+                if(commentUser.getUrl()==null || commentUser.getUrl().equalsIgnoreCase("")){
+                    commentVo.setUrl("http://www.iplaystone.com/static/common/images/loginPic.png");
+                }else{
+                    commentVo.setUrl(commentUser.getUrl());
+                }
                 commentVo.setUserId(commentUser.getId());
                 //查询该评论下的回复内容
                 List<CommentVo> replies = new ArrayList<>();

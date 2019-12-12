@@ -10,6 +10,7 @@
         <result column="nickname" property="nickname"/>
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
+        <result column="url" property="url"/>
         <result column="create_time" property="createTime"/>
 
     </resultMap>
@@ -23,6 +24,7 @@
         nickname,
         email,
         phone,
+        url,
         create_time
         as
         createTime

@@ -10,6 +10,7 @@ public class CommentVo {
     private String content;
     private String nickName;
     private Date createTime;
+    private String url;
     private String userId;
 
     private Boolean replyFlag;
@@ -18,6 +19,14 @@ public class CommentVo {
         this.id = id;
         this.content = content;
         this.createTime = createTime;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public CommentVo(String id, String content, String nickName, Date createTime) {
