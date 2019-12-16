@@ -8,7 +8,7 @@ import com.nochi.pet.manage.core.log.LogObjectHolder;
 import com.nochi.pet.manage.modular.base.entity.Result;
 import com.nochi.pet.manage.modular.food.entity.Food;
 import com.nochi.pet.manage.modular.food.service.FoodService;
-import com.nochi.pet.manage.modular.system.warpper.DeptWrapper;
+import com.nochi.pet.manage.modular.system.warpper.UserWrapper;
 import com.nochi.pet.manage.modular.user.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,7 +73,7 @@ public class FoodController {
     @ResponseBody
     public Result list(@RequestParam(value = "title", required = false) String title) {
         Page<Map<String, Object>> list = foodService.list(title);
-        Page<Map<String, Object>> wrap = new DeptWrapper(list).wrap();
+        Page<Map<String, Object>> wrap = new UserWrapper(list).wrap();
         return new Result().success(wrap);
     }
     @RequestMapping("/list2")
@@ -81,7 +81,7 @@ public class FoodController {
     public Object list2(@RequestParam(value = "title", required = false) String title) {
         Page<Map<String, Object>> list = foodService.list(title);
 
-        Page<Map<String, Object>> wrap = new DeptWrapper(list).wrap();
+        Page<Map<String, Object>> wrap = new UserWrapper(list).wrap();
         return LayuiPageFactory.createPageInfo(wrap);
     }
 

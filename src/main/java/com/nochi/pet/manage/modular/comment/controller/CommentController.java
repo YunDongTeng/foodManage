@@ -5,7 +5,7 @@ import com.nochi.pet.manage.core.common.page.LayuiPageFactory;
 import com.nochi.pet.manage.modular.base.entity.Result;
 import com.nochi.pet.manage.modular.comment.entity.Comment;
 import com.nochi.pet.manage.modular.comment.service.CommentService;
-import com.nochi.pet.manage.modular.system.warpper.DeptWrapper;
+import com.nochi.pet.manage.modular.system.warpper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +50,7 @@ public class CommentController {
 
         Page<Map<String, Object>> list = commentService.list("");
 
-        Page<Map<String, Object>> wrap = new DeptWrapper(list).wrap();
+        Page<Map<String, Object>> wrap = new UserWrapper(list).wrap();
         return LayuiPageFactory.createPageInfo(wrap);
     }
 }

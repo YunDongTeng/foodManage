@@ -12,27 +12,30 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 package com.nochi.pet.manage.core.log.factory;
 
 import com.nochi.pet.manage.core.common.constant.state.LogSucceed;
 import com.nochi.pet.manage.core.common.constant.state.LogType;
-import com.nochi.pet.manage.modular.system.entity.LoginLog;
-import com.nochi.pet.manage.modular.system.entity.OperationLog;
 
 import java.util.Date;
 
+*/
 /**
  * 日志对象创建工厂
  *
  * @author fengshuonan
  * @date 2016年12月6日 下午9:18:27
- */
+ *//*
+
 public class LogFactory {
 
-    /**
+    */
+/**
      * 创建操作日志
-     */
+     *//*
+
     public static OperationLog createOperationLog(LogType logType, Long userId, String bussinessName, String clazzName, String methodName, String msg, LogSucceed succeed) {
         OperationLog operationLog = new OperationLog();
         operationLog.setLogType(logType.getMessage());
@@ -46,9 +49,11 @@ public class LogFactory {
         return operationLog;
     }
 
-    /**
+    */
+/**
      * 创建登录日志
-     */
+     *//*
+
     public static LoginLog createLoginLog(LogType logType, Long userId, String msg, String ip) {
         LoginLog loginLog = new LoginLog();
         loginLog.setLogName(logType.getMessage());
@@ -60,3 +65,4 @@ public class LogFactory {
         return loginLog;
     }
 }
+*/

@@ -15,7 +15,6 @@
  */
 package com.nochi.pet.manage.core.common.constant.factory;
 
-import com.nochi.pet.manage.modular.system.entity.Dict;
 import com.nochi.pet.manage.modular.system.entity.Menu;
 
 import java.util.List;
@@ -119,10 +118,6 @@ public interface IConstantFactory {
      */
     String getMenuStatusName(String status);
 
-    /**
-     * 查询字典
-     */
-    List<Dict> findInDict(Long id);
 
     /**
      * 获取被缓存的对象(用户删除业务)

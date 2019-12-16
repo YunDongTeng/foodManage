@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nochi.pet.manage.core.common.page.LayuiPageFactory;
 import com.nochi.pet.manage.core.log.LogObjectHolder;
 import com.nochi.pet.manage.modular.base.entity.Result;
-import com.nochi.pet.manage.modular.system.warpper.DeptWrapper;
+import com.nochi.pet.manage.modular.system.warpper.UserWrapper;
 import com.nochi.pet.manage.modular.user.entity.UserInfo;
 import com.nochi.pet.manage.modular.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class UserInfoController extends BaseController {
     public Object list(@RequestParam(value = "userName", required = false) String userName) {
         Page<Map<String, Object>> list = this.userInfoService.list(userName);
 
-        Page<Map<String, Object>> wrap = new DeptWrapper(list).wrap();
+        Page<Map<String, Object>> wrap = new UserWrapper(list).wrap();
         return LayuiPageFactory.createPageInfo(wrap);
     }
 

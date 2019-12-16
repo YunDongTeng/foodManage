@@ -17,7 +17,6 @@ package com.nochi.pet.manage.modular.system.controller;
 
 import com.nochi.pet.manage.core.common.node.MenuNode;
 import com.nochi.pet.manage.core.log.LogManager;
-import com.nochi.pet.manage.core.log.factory.LogTaskFactory;
 import com.nochi.pet.manage.core.shiro.ShiroKit;
 import com.nochi.pet.manage.core.shiro.ShiroUser;
 import com.nochi.pet.manage.modular.system.service.UserService;
@@ -112,9 +111,6 @@ public class LoginController extends BaseController {
         currentUser.login(token);
 
         //登录成功，记录登录日志
-        ShiroUser shiroUser = ShiroKit.getUserNotNull();
-        LogManager.me().executeLog(LogTaskFactory.loginLog(shiroUser.getId(), getIp()));
-
         ShiroKit.getSession().setAttribute("sessionFlag", true);
 
         return REDIRECT + "/";
@@ -128,7 +124,6 @@ public class LoginController extends BaseController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logOut() {
-        LogManager.me().executeLog(LogTaskFactory.exitLog(ShiroKit.getUserNotNull().getId(), getIp()));
         ShiroKit.getSubject().logout();
         deleteAllCookie();
         return REDIRECT + "/login";

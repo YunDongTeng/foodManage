@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 package com.nochi.pet.manage.core.log.factory;
 
 import com.nochi.pet.manage.core.common.constant.state.LogSucceed;
@@ -29,12 +30,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.TimerTask;
 
+*/
 /**
  * 日志操作任务创建工厂
  *
  * @author fengshuonan
  * @date 2016年12月6日 下午9:18:27
- */
+ *//*
+
 public class LogTaskFactory {
 
     private static Logger logger = LoggerFactory.getLogger(LogManager.class);
@@ -115,3 +118,4 @@ public class LogTaskFactory {
         };
     }
 }
+*/

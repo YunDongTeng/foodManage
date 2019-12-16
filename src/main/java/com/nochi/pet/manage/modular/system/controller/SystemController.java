@@ -25,12 +25,8 @@ import com.nochi.pet.manage.core.common.exception.BizExceptionEnum;
 import com.nochi.pet.manage.core.log.LogObjectHolder;
 import com.nochi.pet.manage.core.shiro.ShiroKit;
 import com.nochi.pet.manage.core.shiro.ShiroUser;
-import com.nochi.pet.manage.modular.system.entity.FileInfo;
-import com.nochi.pet.manage.modular.system.entity.Notice;
 import com.nochi.pet.manage.modular.system.entity.User;
 import com.nochi.pet.manage.modular.system.factory.UserFactory;
-import com.nochi.pet.manage.modular.system.service.FileInfoService;
-import com.nochi.pet.manage.modular.system.service.NoticeService;
 import com.nochi.pet.manage.modular.system.service.UserService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
@@ -70,11 +66,6 @@ public class SystemController extends BaseController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private FileInfoService fileInfoService;
-
-    @Autowired
-    private NoticeService noticeService;
 
     @Autowired
     private GunsProperties gunsProperties;
@@ -101,18 +92,6 @@ public class SystemController extends BaseController {
         return "/modular/frame/console2.html";
     }
 
-    /**
-     * 跳转到首页通知
-     *
-     * @author fengshuonan
-     * @Date 2018/12/23 6:06 PM
-     */
-    @RequestMapping("/notice")
-    public String hello() {
-        List<Notice> notices = noticeService.list();
-        super.setAttr("noticeList", notices);
-        return "/modular/frame/notice.html";
-    }
 
     /**
      * 主页面
@@ -172,7 +151,7 @@ public class SystemController extends BaseController {
         model.addAllAttributes(BeanUtil.beanToMap(user));
         model.addAttribute("roleName", ConstantFactory.me().getRoleName(user.getRoleId()));
         model.addAttribute("deptName", ConstantFactory.me().getDeptName(user.getDeptId()));
-        LogObjectHolder.me().set(user);
+      //  LogObjectHolder.me().set(user);
         return "/modular/frame/user_info.html";
     }
 
@@ -217,9 +196,6 @@ public class SystemController extends BaseController {
         }
 
         avatar = avatar.substring(avatar.indexOf(",") + 1);
-
-        fileInfoService.uploadAvatar(avatar);
-
         return SUCCESS_TIP;
     }
 
@@ -246,12 +222,6 @@ public class SystemController extends BaseController {
         if (ToolUtil.isEmpty(avatar)) {
             avatar = DefaultAvatar.BASE_64_AVATAR;
         } else {
-            FileInfo fileInfo = fileInfoService.getById(avatar);
-            if (fileInfo == null) {
-                avatar = DefaultAvatar.BASE_64_AVATAR;
-            } else {
-                avatar = fileInfo.getFileData();
-            }
         }
 
         //输出图片的文件流

@@ -19,7 +19,6 @@ import com.nochi.pet.manage.core.common.annotion.BussinessLog;
 import com.nochi.pet.manage.core.common.constant.dictmap.base.AbstractDictMap;
 import com.nochi.pet.manage.core.log.LogManager;
 import com.nochi.pet.manage.core.log.LogObjectHolder;
-import com.nochi.pet.manage.core.log.factory.LogTaskFactory;
 import com.nochi.pet.manage.core.shiro.ShiroKit;
 import com.nochi.pet.manage.core.shiro.ShiroUser;
 import com.nochi.pet.manage.core.util.Contrast;
@@ -115,6 +114,5 @@ public class LogAop {
             msg = Contrast.parseMutiKey(dictMap, key, parameters);
         }
 
-        LogManager.me().executeLog(LogTaskFactory.bussinessLog(user.getId(), bussinessName, className, methodName, msg));
     }
 }

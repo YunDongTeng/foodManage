@@ -45,12 +45,10 @@ import java.util.List;
 public class ConstantFactory implements IConstantFactory {
 
     private RoleMapper roleMapper = SpringContextHolder.getBean(RoleMapper.class);
-    private DeptMapper deptMapper = SpringContextHolder.getBean(DeptMapper.class);
-    private DictMapper dictMapper = SpringContextHolder.getBean(DictMapper.class);
-    private DictTypeMapper dictTypeMapper = SpringContextHolder.getBean(DictTypeMapper.class);
+
     private UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
     private MenuMapper menuMapper = SpringContextHolder.getBean(MenuMapper.class);
-    private NoticeMapper noticeMapper = SpringContextHolder.getBean(NoticeMapper.class);
+
 
     public static IConstantFactory me() {
         return SpringContextHolder.getBean("constantFactory");
@@ -127,11 +125,7 @@ public class ConstantFactory implements IConstantFactory {
         } else if (deptId == 0L) {
             return "顶级";
         } else {
-            Dept dept = deptMapper.selectById(deptId);
-            if (ToolUtil.isNotEmpty(dept) && ToolUtil.isNotEmpty(dept.getFullName())) {
-                return dept.getFullName();
-            }
-            return "";
+           return "";
         }
     }
 
@@ -217,51 +211,17 @@ public class ConstantFactory implements IConstantFactory {
 
     @Override
     public String getDictName(Long dictId) {
-        if (ToolUtil.isEmpty(dictId)) {
-            return "";
-        } else {
-            Dict dict = dictMapper.selectById(dictId);
-            if (dict == null) {
-                return "";
-            } else {
-                return dict.getName();
-            }
-        }
+       return "";
     }
 
     @Override
     public String getNoticeTitle(Long dictId) {
-        if (ToolUtil.isEmpty(dictId)) {
-            return "";
-        } else {
-            Notice notice = noticeMapper.selectById(dictId);
-            if (notice == null) {
-                return "";
-            } else {
-                return notice.getTitle();
-            }
-        }
+       return "";
     }
 
     @Override
     public String getDictsByName(String name, String code) {
-        DictType temp = new DictType();
-        temp.setName(name);
-        QueryWrapper<DictType> queryWrapper = new QueryWrapper<>(temp);
-        DictType dictType = dictTypeMapper.selectOne(queryWrapper);
-        if (dictType == null) {
-            return "";
-        } else {
-            QueryWrapper<Dict> wrapper = new QueryWrapper<>();
-            wrapper = wrapper.eq("dict_type_id", dictType.getDictTypeId());
-            List<Dict> dicts = dictMapper.selectList(wrapper);
-            for (Dict item : dicts) {
-                if (item.getCode() != null && item.getCode().equals(code)) {
-                    return item.getName();
-                }
-            }
-            return "";
-        }
+        return "";
     }
 
     @Override
@@ -279,20 +239,7 @@ public class ConstantFactory implements IConstantFactory {
         return MenuStatus.getDescription(status);
     }
 
-    @Override
-    public List<Dict> findInDict(Long id) {
-        if (ToolUtil.isEmpty(id)) {
-            return null;
-        } else {
-            QueryWrapper<Dict> wrapper = new QueryWrapper<>();
-            List<Dict> dicts = dictMapper.selectList(wrapper.eq("pid", id));
-            if (dicts == null || dicts.size() == 0) {
-                return null;
-            } else {
-                return dicts;
-            }
-        }
-    }
+
 
     @Override
     public String getCacheObject(String para) {
@@ -306,26 +253,16 @@ public class ConstantFactory implements IConstantFactory {
         if (deptId == null) {
             return deptIds;
         } else {
-            List<Dept> depts = this.deptMapper.likePids(deptId);
-            if (depts != null && depts.size() > 0) {
-                for (Dept dept : depts) {
-                    deptIds.add(dept.getDeptId());
-                }
-            }
-
-            return deptIds;
+           return deptIds;
         }
     }
 
     @Override
     public List<Long> getParentDeptIds(Long deptId) {
-        Dept dept = deptMapper.selectById(deptId);
-        String pids = dept.getPids();
-        String[] split = pids.split(",");
+
+       /* String[] split = pids.split(",");*/
         ArrayList<Long> parentDeptIds = new ArrayList<>();
-        for (String s : split) {
-            parentDeptIds.add(Long.valueOf(StrUtil.removeSuffix(StrUtil.removePrefix(s, "["), "]")));
-        }
+
         return parentDeptIds;
     }
 
